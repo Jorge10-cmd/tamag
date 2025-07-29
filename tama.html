@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPY</title>
+    <style>
+        :root {
+            --color-primario: #2c3e50;
+            --color-secundario: #3498db;
+            --color-exito: #2ecc71;
+            --color-peligro: #e74c3c;
+            --color-advertencia: #f39c12;
+            --color-texto: #ecf0f1;
+            --color-fondo: #1a252f;
+            --color-borde: #34495e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--color-primario);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 2px solid var(--color-borde);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--color-borde);
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 15px 0;
+            color: var(--color-texto);
+        }
+
+        .selectors {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .selector-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        select {
+            background: white;
+            border: 2px solid var(--color-borde);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--color-secundario);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .avatar {
+            font-size: 8rem;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, var(--color-secundario) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .stats {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            height: 25px;
+            background: var(--color-fondo);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--color-borde);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            rgba(255, 255, 255, 0.1) 0%, 
+                            rgba(255, 255, 255, 0.3) 50%, 
+                            rgba(255, 255, 255, 0.1) 100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .energia {
+            background: linear-gradient(90deg, var(--color-exito), #4cd964);
+        }
+
+        .conocimiento {
+            background: linear-gradient(90deg, var(--color-secundario), #5dade2);
+        }
+
+        .felicidad {
+            background: linear-gradient(90deg, var(--color-advertencia), #f5b041);
+        }
+
+        .current-subject {
+            background: var(--color-fondo);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid var(--color-borde);
+            width: 100%;
+            max-width: 500px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-subject::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--color-secundario);
+        }
+
+        .log-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .log-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log {
+            background: var(--color-fondo);
+            border-radius: 8px;
+            padding: 15px;
+            height: 150px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--color-borde);
+            line-height: 1.5;
+        }
+
+        .log::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .log::-webkit-scrollbar-track {
+            background: var(--color-primario);
+        }
+
+        .log::-webkit-scrollbar-thumb {
+            background: var(--color-secundario);
+            border-radius: 4px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-alimentar {
+            background: var(--color-exito);
+            color: white;
+        }
+
+        .btn-estudiar {
+            background: var(--color-secundario);
+            color: white;
+        }
+
+        .btn-jugar {
+            background: var(--color-advertencia);
+            color: white;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-time {
+            color: var(--color-secundario);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .selectors {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .avatar {
+                font-size: 6rem;
+            }
+            
+            .avatar-bg {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Tamagotchi Programador</h1>
+            <p class="subtitle">Cuida a tu programador virtual</p>
+            <div class="name" id="lblNombre">Programador</div>
+            
+            <div class="selectors">
+                <div class="selector-group">
+                    <label for="comboCuatrimestres">📆 Cuatrimestre</label>
+                    <select id="comboCuatrimestres"></select>
+                </div>
+                <div class="selector-group">
+                    <label for="comboMaterias">📚 Materia</label>
+                    <select id="comboMaterias"></select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="avatar-container">
+                <div class="avatar-bg"></div>
+                <div class="avatar" id="lblAvatar">🤓</div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">
+                        <span>ENERGÍA</span>
+                        <span id="energiaValue">100%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar energia" id="barEnergia" style="width: 100%"></div>
+                    </div>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-label">
+                        <span>CONOCIMIENTO</span>
+                        <span id="conocimientoValue">0%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar conocimiento" id="barConocimiento" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-label">
+                        <span>FELICIDAD</span>
+                        <span id="felicidadValue">80%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar felicidad" id="barFelicidad" style="width: 80%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="current-subject">
+                <div id="lblMateria">Introducción a la Programación</div>
+            </div>
+            
+            <div class="log-container">
+                <div class="log-title">
+                    <span>💻 Historial de Eventos</span>
+                </div>
+                <div class="log" id="areaLog"></div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-alimentar" id="btnAlimentar">🍔 Alimentar</button>
+                <button class="btn btn-estudiar" id="btnEstudiar">📚 Estudiar</button>
+                <button class="btn btn-jugar" id="btnJugar">🎮 Jugar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables del juego
+        let nombre = "Programador";
+        let energia = 100;
+        let conocimiento = 0;
+        let felicidad = 80;
+        let cuatrimestre = 1;
+        let materiaActual = "Introducción a la Programación";
+        const bancoPreguntas = {
+            "Introducción a la Programación": [
+                "¿Qué es un algoritmo?",
+                "¿Qué es una variable y para qué sirve?",
+                "¿Cuáles son los tipos de datos básicos?",
+                "¿Qué es un bucle for?",
+                "Diferencia entre if y switch"
+            ],
+            "Programación Orientada a Objetos": [
+                "¿Qué son los 4 pilares de la POO?",
+                "Diferencia entre clase y objeto",
+                "¿Qué es la herencia en Java?",
+                "Ejemplo de polimorfismo",
+                "¿Qué es el encapsulamiento?"
+            ],
+            "Estructuras de Datos Básicas": [
+                "¿Qué es una lista enlazada?",
+                "Diferencia entre pila y cola",
+                "¿Cómo funciona un árbol binario?",
+                "Ventajas de una tabla hash",
+                "Complejidad de búsqueda en array no ordenado"
+            ],
+            "Bases de Datos SQL": [
+                "¿Qué es una clave primaria?",
+                "Diferencia entre INNER JOIN y LEFT JOIN",
+                "¿Para qué sirve GROUP BY?",
+                "Normalización de bases de datos",
+                "¿Qué es una transacción ACID?"
+            ],
+            "Algoritmos Avanzados": [
+                "Explica el algoritmo QuickSort",
+                "¿Qué es programación dinámica?",
+                "Diferencia entre BFS y DFS",
+                "Ejemplo de algoritmo greedy",
+                "¿Qué es la notación Big O?"
+            ],
+            "Desarrollo Web Frontend": [
+                "Diferencia entre HTML y CSS",
+                "¿Qué es JavaScript?",
+                "¿Cómo funciona el DOM?",
+                "Ventajas de React/Angular",
+                "¿Qué es AJAX?"
+            ],
+            "Desarrollo Backend": [
+                "¿Qué es un API REST?",
+                "Diferencia entre POST y PUT",
+                "¿Qué es JWT?",
+                "Ventajas de Node.js",
+                "¿Qué es Spring Boot?"
+            ],
+            "Desarrollo Móvil": [
+                "Diferencia entre nativo e híbrido",
+                "¿Qué es Flutter?",
+                "Componentes básicos de Android",
+                "Ciclo de vida de una Activity",
+                "¿Qué es React Native?"
+            ],
+            "Inteligencia Artificial": [
+                "¿Qué es machine learning?",
+                "Diferencia entre AI y ML",
+                "Tipos de aprendizaje automático",
+                "¿Qué es una red neuronal?",
+                "Ejemplo de algoritmo de clasificación"
+            ],
+            "Proyecto de Titulación": [
+                "Metodologías ágiles (SCRUM)",
+                "¿Qué es DevOps?",
+                "Pruebas unitarias vs integrales",
+                "Patrones de diseño de software",
+                "Principios SOLID"
+            ]
+        };
+
+        // Elementos del DOM
+        const lblNombre = document.getElementById('lblNombre');
+        const lblMateria = document.getElementById('lblMateria');
+        const lblAvatar = document.getElementById('lblAvatar');
+        const barEnergia = document.getElementById('barEnergia');
+        const barConocimiento = document.getElementById('barConocimiento');
+        const barFelicidad = document.getElementById('barFelicidad');
+        const btnAlimentar = document.getElementById('btnAlimentar');
+        const btnEstudiar = document.getElementById('btnEstudiar');
+        const btnJugar = document.getElementById('btnJugar');
+        const comboCuatrimestres = document.getElementById('comboCuatrimestres');
+        const comboMaterias = document.getElementById('comboMaterias');
+        const areaLog = document.getElementById('areaLog');
+        const energiaValue = document.getElementById('energiaValue');
+        const conocimientoValue = document.getElementById('conocimientoValue');
+        const felicidadValue = document.getElementById('felicidadValue');
+
+        // Inicializar el juego
+        function iniciarJuego() {
+            nombre = prompt("¿Cómo se llama tu Tamagotchi Programador?") || "Programador";
+            lblNombre.textContent = nombre;
+            inicializarSelectores();
+            agregarLog(`¡Bienvenido ${nombre}! Comienza tu aventura programando.`);
+            actualizarEstado();
+            
+            // Cargar estado guardado si existe
+            cargarEstado();
+        }
+
+        // Inicializar los selectores
+        function inicializarSelectores() {
+            // Llenar cuatrimestres
+            for (let i = 1; i <= 10; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                comboCuatrimestres.appendChild(option);
+            }
+            
+            comboCuatrimestres.value = cuatrimestre;
+            comboCuatrimestres.addEventListener('change', actualizarMaterias);
+            
+            actualizarMaterias();
+        }
+
+        // Actualizar materias según cuatrimestre
+        function actualizarMaterias() {
+            cuatrimestre = parseInt(comboCuatrimestres.value);
+            comboMaterias.innerHTML = '';
+            
+            const materias = {
+                1: "Introducción a la Programación",
+                2: "Programación Orientada a Objetos",
+                3: "Estructuras de Datos Básicas",
+                4: "Bases de Datos SQL",
+                5: "Algoritmos Avanzados",
+                6: "Desarrollo Web Frontend",
+                7: "Desarrollo Backend",
+                8: "Desarrollo Móvil",
+                9: "Inteligencia Artificial",
+                10: "Proyecto de Titulación"
+            };
+            
+            const materia = materias[cuatrimestre];
+            const option = document.createElement('option');
+                option.value = materia;
+                option.textContent = materia;
+                comboMaterias.appendChild(option);
+            
+            materiaActual = materia;
+            lblMateria.textContent = materia;
+            agregarLog(`Cambiaste a ${materia} (Cuatrimestre ${cuatrimestre})`);
+            
+            // Guardar estado
+            guardarEstado();
+        }
+
+        // Funciones de acciones
+        function alimentar() {
+            energia = Math.min(100, energia + 30);
+            felicidad = Math.min(100, felicidad + 5);
+            agregarLog(`${nombre} comió. +30 Energía, +5 Felicidad`);
+            actualizarEstado();
+        }
+
+        function estudiar() {
+            if (energia < 20) {
+                agregarLog(`¡${nombre} está demasiado cansado para estudiar!`);
+                return;
+            }
+
+            const preguntas = bancoPreguntas[materiaActual];
+            const pregunta = preguntas[Math.floor(Math.random() * preguntas.length)];
+            
+            // Crear un modal personalizado para la pregunta
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1000';
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.backgroundColor = 'var(--color-primario)';
+            modalContent.style.padding = '20px';
+            modalContent.style.borderRadius = '10px';
+            modalContent.style.width = '80%';
+            modalContent.style.maxWidth = '500px';
+            modalContent.style.border = '2px solid var(--color-secundario)';
+            
+            const preguntaText = document.createElement('p');
+            preguntaText.textContent = pregunta;
+            preguntaText.style.marginBottom = '20px';
+            preguntaText.style.fontSize = '1.2rem';
+            preguntaText.style.fontWeight = '600';
+            
+            const inputRespuesta = document.createElement('input');
+            inputRespuesta.type = 'text';
+            inputRespuesta.style.width = '100%';
+            inputRespuesta.style.padding = '10px';
+            inputRespuesta.style.marginBottom = '15px';
+            inputRespuesta.style.borderRadius = '5px';
+            inputRespuesta.style.border = '1px solid var(--color-borde)';
+            inputRespuesta.style.backgroundColor = 'var(--color-fondo)';
+            inputRespuesta.style.color = 'var(--color-texto)';
+            
+            const btnResponder = document.createElement('button');
+            btnResponder.textContent = 'Responder';
+            btnResponder.style.padding = '10px 20px';
+            btnResponder.style.backgroundColor = 'var(--color-secundario)';
+            btnResponder.style.color = 'white';
+            btnResponder.style.border = 'none';
+            btnResponder.style.borderRadius = '5px';
+            btnResponder.style.cursor = 'pointer';
+            btnResponder.style.fontWeight = '600';
+            
+            btnResponder.addEventListener('click', () => {
+                if (inputRespuesta.value.trim() !== "") {
+                    conocimiento = Math.min(100, conocimiento + 15);
+                    felicidad = Math.min(100, felicidad + 5);
+                    agregarLog("¡Respuesta correcta! +15 Conocimiento");
+                } else {
+                    agregarLog("No respondiste...");
+                }
+                
+                energia = Math.max(0, energia - 20);
+                actualizarEstado();
+                document.body.removeChild(modal);
+            });
+            
+            modalContent.appendChild(preguntaText);
+            modalContent.appendChild(inputRespuesta);
+            modalContent.appendChild(btnResponder);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Enfocar el input automáticamente
+            inputRespuesta.focus();
+            
+            // Cerrar modal al presionar Enter
+            inputRespuesta.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    btnResponder.click();
+                }
+            });
+        }
+
+        function jugar() {
+            if (energia < 10) {
+                agregarLog(`¡${nombre} no tiene energía para jugar!`);
+                return;
+            }
+
+            felicidad = Math.min(100, felicidad + 20);
+            energia = Math.max(0, energia - 10);
+            agregarLog(`¡Jugaste con ${nombre}! +20 Felicidad`);
+            actualizarEstado();
+        }
+
+        // Actualizar la interfaz
+        function actualizarEstado() {
+            // Actualizar barras de progreso
+            barEnergia.style.width = `${energia}%`;
+            barConocimiento.style.width = `${conocimiento}%`;
+            barFelicidad.style.width = `${felicidad}%`;
+            
+            // Actualizar valores numéricos
+            energiaValue.textContent = `${energia}%`;
+            conocimientoValue.textContent = `${conocimiento}%`;
+            felicidadValue.textContent = `${felicidad}%`;
+            
+            // Cambiar avatar según estado
+            if (energia < 20) {
+                lblAvatar.textContent = "😴";
+            } else if (felicidad > 80) {
+                lblAvatar.textContent = "😎";
+            } else if (conocimiento > 70) {
+                lblAvatar.textContent = "🤓";
+            } else {
+                lblAvatar.textContent = "🙂";
+            }
+            
+            // Efecto de animación
+            lblAvatar.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                lblAvatar.style.transform = 'scale(1)';
+            }, 100);
+            
+            // Verificar graduación
+            if (conocimiento >= 100 && cuatrimestre < 10) {
+                conocimiento = 0;
+                cuatrimestre++;
+                comboCuatrimestres.value = cuatrimestre;
+                actualizarMaterias();
+                agregarLog(`¡Felicidades! Pasaste al cuatrimestre ${cuatrimestre}`);
+                
+                // Efecto especial de graduación
+                const gradEffect = document.createElement('div');
+                gradEffect.style.position = 'fixed';
+                gradEffect.style.top = '0';
+                gradEffect.style.left = '0';
+                gradEffect.style.width = '100%';
+                gradEffect.style.height = '100%';
+                gradEffect.style.backgroundColor = 'rgba(46, 204, 113, 0.3)';
+                gradEffect.style.display = 'flex';
+                gradEffect.style.justifyContent = 'center';
+                gradEffect.style.alignItems = 'center';
+                gradEffect.style.zIndex = '1000';
+                gradEffect.style.pointerEvents = 'none';
+                gradEffect.style.animation = 'fadeOut 2s forwards';
+                
+                const gradText = document.createElement('div');
+                gradText.textContent = '¡Nuevo Cuatrimestre!';
+                gradText.style.fontSize = '3rem';
+                gradText.style.fontWeight = 'bold';
+                gradText.style.color = 'white';
+                gradText.style.textShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+                
+                gradEffect.appendChild(gradText);
+                document.body.appendChild(gradEffect);
+                
+                setTimeout(() => {
+                    document.body.removeChild(gradEffect);
+                }, 2000);
+            } else if (cuatrimestre === 10 && conocimiento >= 100) {
+                agregarLog("¡GRADUADO CON HONORES! 🎓");
+                lblAvatar.textContent = "🎓";
+                
+                // Efecto especial de graduación final
+                const gradEffect = document.createElement('div');
+                gradEffect.style.position = 'fixed';
+                gradEffect.style.top = '0';
+                gradEffect.style.left = '0';
+                gradEffect.style.width = '100%';
+                gradEffect.style.height = '100%';
+                gradEffect.style.backgroundColor = 'rgba(52, 152, 219, 0.3)';
+                gradEffect.style.display = 'flex';
+                gradEffect.style.justifyContent = 'center';
+                gradEffect.style.alignItems = 'center';
+                gradEffect.style.zIndex = '1000';
+                gradEffect.style.pointerEvents = 'none';
+                gradEffect.style.animation = 'fadeOut 3s forwards';
+                
+                const gradText = document.createElement('div');
+                gradText.textContent = '¡GRADUADO!';
+                gradText.style.fontSize = '4rem';
+                gradText.style.fontWeight = 'bold';
+                gradText.style.color = 'white';
+                gradText.style.textShadow = '0 0 15px rgba(0, 0, 0, 0.7)';
+                
+                gradEffect.appendChild(gradText);
+                document.body.appendChild(gradEffect);
+                
+                setTimeout(() => {
+                    document.body.removeChild(gradEffect);
+                }, 3000);
+            }
+            
+            // Guardar estado
+            guardarEstado();
+        }
+
+        // Agregar mensaje al log
+        function agregarLog(mensaje) {
+            const ahora = new Date();
+            const hora = ahora.getHours().toString().padStart(2, '0');
+            const minuto = ahora.getMinutes().toString().padStart(2, '0');
+            const segundo = ahora.getSeconds().toString().padStart(2, '0');
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="log-time">[${hora}:${minuto}:${segundo}]</span> ${mensaje}`;
+            areaLog.appendChild(logEntry);
+            areaLog.scrollTop = areaLog.scrollHeight;
+        }
+
+        // Guardar estado en localStorage
+        function guardarEstado() {
+            const estado = {
+                nombre,
+                energia,
+                conocimiento,
+                felicidad,
+                cuatrimestre,
+                materiaActual,
+                log: areaLog.innerHTML
+            };
+            localStorage.setItem('tamagotchiEstado', JSON.stringify(estado));
+        }
+
+        // Cargar estado desde localStorage
+        function cargarEstado() {
+            const estadoGuardado = localStorage.getItem('tamagotchiEstado');
+            if (estadoGuardado) {
+                const estado = JSON.parse(estadoGuardado);
+                nombre = estado.nombre;
+                energia = estado.energia;
+                conocimiento = estado.conocimiento;
+                felicidad = estado.felicidad;
+                cuatrimestre = estado.cuatrimestre;
+                materiaActual = estado.materiaActual;
+                
+                lblNombre.textContent = nombre;
+                comboCuatrimestres.value = cuatrimestre;
+                actualizarMaterias();
+                areaLog.innerHTML = estado.log;
+                areaLog.scrollTop = areaLog.scrollHeight;
+            }
+        }
+
+        // Event listeners
+        btnAlimentar.addEventListener('click', alimentar);
+        btnEstudiar.addEventListener('click', estudiar);
+        btnJugar.addEventListener('click', jugar);
+        comboMaterias.addEventListener('change', () => {
+            materiaActual = comboMaterias.value;
+            lblMateria.textContent = materiaActual;
+            agregarLog(`Cambiaste a ${materiaActual}`);
+            guardarEstado();
+        });
+
+        // Iniciar el juego al cargar
+        window.addEventListener('DOMContentLoaded', iniciarJuego);
+
+        // Guardar estado antes de cerrar la página
+        window.addEventListener('beforeunload', guardarEstado);
+    </script>
+</body>
+</html>
